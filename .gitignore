@@ -1,0 +1,11 @@
+# Fichiers de données et de modèles à ignorer
+data/
+Cat_Dog_data/
+*.pt
+*.pth
+runs/
+checkpoints/
+
+# Fichiers temporaires Jupyter/Python
+.ipynb_checkpoints
+__pycache__/
