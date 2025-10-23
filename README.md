@@ -36,11 +36,6 @@ Les deux expériences ont été menées sur **10 époques** avec un `batch_size`
 | **B** | VGG-16 (Transfer) | **0.1764** | **0.9328** | **0.9338** | **0.9318** |
 
 
-Expérience,Modèle,Accélérateur,Temps total (10 Ép.),Loss Finale (Test),Acc Finale (Test),Prec Finale (Test),Rec Finale (Test)
-A,CNN (Scratch),GPU,11.8 minutes,0.6751,0.7812,0.7812,0.7812
-B,VGG-16 (Transfer),GPU,68.5 minutes,0.1764,0.9328,0.9338,0.9318
-
-
 ### Courbes de Performance (Loss et Accuracy)
 
 ![Comparaison Loss et Accuracy A vs B](comparison_metrics.png) 
