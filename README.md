@@ -2,17 +2,17 @@
 
 ## 1. Titre & Objectif du Projet
 
-Ce projet compare l'efficacité de l'entraînement d'un CNN **à partir de zéro** (Expérience A) et l'utilisation du **Transfert Learning avec VGG-16** (Expérience B) pour la classification d'images (Chats vs Chiens). L'objectif est d'analyser l'impact de ces méthodes sur la convergence, la performance (Accuracy, Precision, Recall) et le temps d'exécution sur GPU.
+Ce projet compare l'efficacité de l'entraînement d'un CNN **à partir de zéro** (Expérience A) et l'utilisation du **Transfert Learning avec VGG-16** (Expérience B) pour la classification d'images (Chats vs Chiens). L'exécution a été réalisée sur **Kaggle** avec GPU, garantissant des temps d'exécution raisonnables.
 
 ## 2. Environnement & Dépendances
 
-Le projet a été exécuté sur un Notebook **Kaggle** avec **accélération GPU**. Les dépendances sont listées dans `requirements.txt`.
+Le projet a été exécuté sur un Notebook Kaggle (GPU). Les dépendances sont listées dans `requirements.txt`.
 
 **Installation :** `pip install -r requirements.txt`
 
 ## 3. Organisation des Données
 
-Le jeu de données "Cats vs Dogs" est utilisé. Les chemins ont été adaptés à la structure Kaggle (`/kaggle/input/dogs-vs-cats/`).
+Le jeu de données "Cats vs Dogs" est utilisé. Les chemins des données ont été adaptés pour la structure Kaggle.
 
 ## 4. Commandes et Paramètres d'Entraînement
 
@@ -22,7 +22,7 @@ Les deux expériences ont été menées sur **10 époques** avec un `batch_size`
 | :--- | :--- | :--- |
 | **Architecture** | CNN simple (3 blocs conv) | VGG-16 (poids IMAGENET1K_V1) |
 | **Optimiseur** | Adam ($\text{lr} = 0.001$) | Adam ($\text{lr} = 0.001$) sur les couches FC seulement |
-| **Temps total (GPU)** | **13.5 minutes** | **68.5 minutes** |
+| **Temps total (GPU)** | **11.8 minutes** | **68.5 minutes** |
 
 ---
 
@@ -32,29 +32,29 @@ Les deux expériences ont été menées sur **10 époques** avec un `batch_size`
 
 | Expérience | Modèle | Loss Finale (Test) | Acc Finale (Test) | Prec Finale (Test) | Rec Finale (Test) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **A** | CNN (*Scratch*) | **0.7877** | **0.7584** | **0.7584** | **0.7584** |
+| **A** | CNN (*Scratch*) | **0.6751** | **0.7812** | **0.7812** | **0.7812** |
 | **B** | VGG-16 (Transfer) | **0.1764** | **0.9328** | **0.9338** | **0.9318** |
 
 ### Courbes de Performance (Loss et Accuracy)
 
-*(Insérer ici les images des deux graphiques générés par Matplotlib)* 
+![Comparaison Loss et Accuracy A vs B](comparison_metrics.png) 
 
 ### Matrice de Confusion (Bonus)
 
-*(Insérer ici l'image de la Matrice de Confusion finale de l'Expérience B)*
+![Matrice de Confusion Expérience B](confusion_matrix_B.png)
 
 ### Analyse Comparative (2-3 Paragraphes)
 
 **1. Performance et Robustesse**
-L'Expérience B (Transfer Learning) surpasse largement l'Expérience A. L'Expérience A a plafonné à **$75.84 \%$** d'Accuracy, indiquant que le modèle n'a pas réussi à extraire suffisamment de caractéristiques en 10 époques. En revanche, l'Expérience B a atteint une Accuracy de **$93.28 \%$** avec une Loss de seulement $0.1764$. Ce résultat confirme que les caractéristiques génériques apprises par VGG-16 sur ImageNet sont transférables et robustes pour la classification Chat/Chien, permettant un bond de performance de $\approx 17$ points d'Accuracy.
+L'Expérience B (Transfer Learning) surpasse massivement l'Expérience A. L'Expérience A a plafonné à **$78.12 \%$** d'Accuracy, ce qui est une amélioration par rapport aux résultats sur CPU mais reste modéré. En revanche, l'Expérience B a atteint une Accuracy de **$93.28 \%$** avec une Loss très faible. Ce gain de **15.16 points d'Accuracy** valide l'hypothèse selon laquelle l'utilisation de poids pré-entraînés (VGG-16) est la méthode la plus efficace pour les tâches de vision par ordinateur.
 
-**2. Convergence et Efficacité Temporelle**
-Bien que les deux expériences aient été lancées sur GPU, l'Expérience B a pris **cinq fois plus de temps** (68.5 min vs 13.5 min). Cela contredit le gain de temps typique du Transfer Learning sur CPU. **Cependant**, dans le contexte de notre TP initial, l'Expérience A sur **CPU prenait 7h 40min**, tandis que l'Expérience B est réalisable en environ une heure sur GPU. Le temps plus long de B sur GPU (par rapport à A sur GPU) est probablement dû à la complexité intrinsèque de VGG-16 et au plus grand nombre de paramètres dans les couches non gelées du classifieur que nous avons entraîné.
+**2. Convergence et Efficacité**
+Sur GPU, l'Expérience B a pris plus de temps (**68.5 minutes**) que l'Expérience A (**11.8 minutes**). Cela est dû à la complexité structurelle du VGG-16. Cependant, le temps passé dans l'Expérience B est un investissement qui se traduit par une **qualité de prédiction significativement supérieure**. Le transfert de connaissances permet d'atteindre un niveau de performance impossible pour le petit CNN *from scratch* en 10 époques.
 
-**3. Conclusion et Justification**
-L'approche par Transfer Learning (Expérience B) est la plus efficace pour cette tâche, offrant une **qualité de résultat significativement supérieure** malgré le temps d'exécution plus long sur GPU. Les résultats valident la supériorité des modèles pré-entraînés, en particulier lorsque la performance est l'objectif principal.
+**3. Conclusion**
+Le Transfer Learning (Expérience B) est clairement la méthode supérieure pour ce projet, offrant des résultats de haute qualité qui justifient largement le temps d'entraînement.
 
 ## 6. Limites & Pistes d'Amélioration
 
-* **Analyse du temps GPU :** Il serait pertinent d'analyser plus finement pourquoi VGG-16 a pris plus de temps que le petit CNN sur GPU.
-* **Fine-Tuning** : Améliorer l'Expérience B en dégelant les dernières couches convolutionnelles du VGG-16 avec un très faible learning rate pour adapter davantage le modèle à la tâche.
+* **Analyse du temps GPU :** Il serait intéressant de comprendre pourquoi la complexité de VGG-16 a conduit à un temps d'exécution plus long que le petit CNN, même sur GPU.
+* **Fine-Tuning** : Améliorer l'Expérience B en dégelant les dernières couches convolutionnelles du VGG-16 pour adapter davantage les caractéristiques à notre jeu de données.
